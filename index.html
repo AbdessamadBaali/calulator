@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>caculator</title>
+</head>
+<body>
+        <h1>simple caculator by baalidev</h1>
+          <div class="main">
+            
+            <input  id="showOp"  type="text" value="" readonly > <br>
+            <input id="display" type="text" value="0" readonly   > <br>
+
+            <input  type="button" value="7">
+            <input  type="button" value="8">
+            <input  type="button" value="9">
+            <input  type="button" value="*">
+            <br>
+            <input  type="button" value="4">
+            <input  type="button" value="5">
+            <input  type="button" value="6">
+            <input  type="button" value="/">
+            <br>
+            <input  type="button" value="1">
+            <input  type="button" value="2">
+            <input  type="button" value="3">
+            <input  type="button" value="-">
+            <br>
+            <button class="clear">C</button>
+            <input  type="button" value="0">
+            <input  type="button" value="+">
+            <input  type="button" value=".">
+            <br>
+            <input  type="button" value="%">
+            <input  type="button" value="**">
+            <button class="del">del</button>
+            <button class="result">=</button>
+        </div>
+
+    <script src="scripts/jquery-3.6.0.js"></script>
+
+    <script>
+            
+
+        $(document).ready( () => {
+            var result = 0;
+            var currNum = 0;
+            var check = false;
+
+                $("input[type='button']").click(function(){ 
+                    if (
+                            $(this).val()  == '+' || $(this).val()  == '-' || $(this).val()  == '/' || 
+                            $(this).val()  == '*' || $(this).val()  == '%' || $(this).val() == '**'
+                        ) {    
+                   
+                            if ($("#display").val() == "0" && $("#showOp").val() == "" )
+                            {
+                                $("#showOp").val( '0' + $(this).val());
+            
+                            } 
+                            else if ($("#display").val() == "0" && $("#showOp").val() !== "" )
+                            {
+
+                                if (
+                                    $("#showOp").val().includes("+")  == false || $("#showOp").val().includes("-") == false||
+                                    $("#showOp").val().includes("/") == false || $("#showOp").val().includes("%")  == false||
+                                    $("#showOp").val().includes("*")  == false|| $("#showOp").val().includes("**") == false
+                                    )
+                                     {
+                                         if ($(this).val() == "**" &&  $("#showOp").val().includes("**") == true) {
+
+                                            $("#showOp").val( $("#showOp").val().substring(0,$("#showOp").val().length - 2)  + $(this).val());
+                                         
+                                        } else if ($(this).val() !== "**" &&  $("#showOp").val().includes("**") == true) {
+
+                                            $("#showOp").val( $("#showOp").val().substring(0,$("#showOp").val().length - 2)  + $(this).val());
+                                         
+                                        } else {
+
+                                            $("#showOp").val( $("#showOp").val().substring(0,$("#showOp").val().length - 1)  + $(this).val());
+
+                                         }
+                                        
+                                     } else {
+                                        $("#showOp").val($("#showOp").val()+ $(this).val())
+                                     }
+            
+                            } 
+                            else if ($("#display").val() !== "0" && $("#showOp").val() !== "" )
+                            {
+                                $("#showOp").val(eval(result + currNum ) + $(this).val());
+                                $("#display").val("0"); 
+
+                            }
+                            else  
+                            {
+                                                        
+                                    $("#showOp").val($("#display").val() + $(this).val() );
+                                    $("#display").val('0');
+                            }
+                        result = $("#showOp").val()
+                        currNum = 0;
+                        
+                    } else if ($(this).val() == '.' ) {
+                        if ($("#display").val().includes(".")  == false) {
+
+                            if ($("#display").val() == "0"){
+                                $("#display").val("0" + $(this).val());
+                            } else{
+                                $("#display").val($("#display").val() + $(this).val());
+                            }
+                        }
+                         else{
+                            $("#display").val($("#display").val());
+                        }
+                        
+                    }
+                    else  {
+                        if ($("#display").val() == "0" ){
+
+                            $("#display").val($(this).val()); 
+                            
+                        } else {
+
+                            $("#display").val($("#display").val() + $(this).val()); 
+                          
+                        }
+                        currNum = $("#display").val() 
+                    }
+
+                });
+
+                $(".clear").click( function(){
+
+                    $("#display").val('0');
+                    $("#showOp").val('');
+                    currNum = 0;
+                    result = 0;
+                }); 
+
+                $(".result").click(function(){
+                        if (result == 0) {
+
+                            $("#showOp").val(eval(result + '+'  +  currNum ) +  $(".result").text()); 
+
+                        } else {
+
+                            $("#showOp").val(eval(result +  currNum ) +  $(".result").text()); 
+                        }
+                         
+                        $("#display").val('0');
+                        currNum = 0;
+                        
+                });
+                $(".del").click(function(){
+                    if ( $("#display").val().length == 1 ) {
+
+                        $("#display").val("0");
+                    }
+                    else {
+                        $("#display").val($("#display").val().substring(0,$("#display").val().length - 1));
+
+                   }
+                });
+        })
+
+    </script>
+
+</body>
+</html>
